@@ -3,8 +3,8 @@
 
 We have a very simple Employee Application with the following existing functionality:
 
-- **Backend**: An endpoint to retrieve a list of employees from the database.
-- **Frontend**: A web form that is already connected to the backend, allowing it to call the “add” endpoint (currently not implemented).
+- **Backend**: An API route (`/api/employees`) that interacts with a PostgreSQL database.
+- **Frontend**: A React-based form that allows users to add employees and display a list of employees.
 
 Unfortunately, some functionality is missing, and your task will be to implement it.
 
@@ -14,16 +14,105 @@ Unfortunately, some functionality is missing, and your task will be to implement
 
 Your task will be to achieve the following:
 
-1. **Implement the “Add” Endpoint**: Create functionality to add an employee to the PostgreSQL database.
-2. **Display Employees in the UI**: Update the frontend to display employees that have been saved to the database.
+1. **Implement the API Route**: Complete the `/api/employees` endpoint to handle adding employees to the PostgreSQL database and retrieving the employee list.
+2. **Display Employees in the UI**: Update the frontend to display employees fetched from the database.
 
 ---
 
 ## Tech Stack
 
-- **Frontend**: React/NextJS
-- **Backend**: Node.js (API layer) connected to a PostgreSQL database
+- **Frontend**: React/Next.js
+- **Backend**: Node.js (API routes within Next.js)
+- **Database**: PostgreSQL
 - **Testing Tools**: Jest
+
+---
+
+## Project Structure
+
+The project follows a unified structure where the backend and frontend coexist within a single Next.js application:
+
+```
+project-root/
+├── src/
+│   ├── pages/
+│   │   ├── api/
+│   │   │   ├── employees.js      # Backend API route for employees
+│   │   ├── index.js             # Frontend entry point
+│   ├── components/
+│   │   ├── EmployeeForm.js      # Form to add employees
+│   │   ├── EmployeeList.js      # List of employees
+│   ├── lib/
+│   │   ├── db.js                # Database connection helper
+│   ├── styles/
+│   │   ├── globals.css          # Global styles
+├── public/                      # Static assets
+├── .env.local                   # Environment variables
+├── Dockerfile                   # Docker configuration for the application
+├── docker-compose.yml           # Docker Compose file for the app and PostgreSQL
+├── package.json                 # Dependencies and scripts
+```
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+
+Ensure the following are installed on your machine:
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+### Steps to Run the Application
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/bizzyK/test.git
+   cd test
+   ```
+
+2. **Set up environment variables**:
+   Create a `.env.local` file in the root directory with the following content:
+   ```env
+   PG_USER=user
+   PG_PASSWORD=password
+   PG_HOST=db
+   PG_DATABASE=employee_db
+   PG_PORT=5432
+   ```
+
+3. **Build and start the containers**:
+   Run the following command to set up the application and PostgreSQL database:
+   ```bash
+   docker-compose up --build
+   ```
+
+4. **Access the application**:
+    - **Frontend and API**: [http://localhost:3000](http://localhost:3000)
+    - **Database**: Connect to PostgreSQL at `localhost:5432` with the credentials in `.env.local`.
+
+5. **Stop the application**:
+   To stop the containers, press `Ctrl+C` or run:
+   ```bash
+   docker-compose down
+   ```
+
+---
+
+## Debugging
+
+- **Docker Logs**:
+  Use `docker-compose logs` to view logs for all services. To view logs for a specific service:
+  ```bash
+  docker-compose logs app
+  docker-compose logs db
+  ```
+
+- **Rebuild Without Cache**:
+  If you encounter issues, rebuild the containers without using the cache:
+  ```bash
+  docker-compose build --no-cache
+  ```
 
 ---
 
@@ -36,41 +125,4 @@ Your task will be to achieve the following:
 
 ---
 
-## Setup Instructions
-
-### Prerequisites
-Ensure the following are installed on your machine:
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
-
-### Steps to Run the Application
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/bizzyK/test.git
-   cd test
-   ```
-
-2. **Build and start the containers**:
-   Run the following command to set up the backend, frontend, and PostgreSQL database:
-   ```bash
-   docker-compose up --build
-   ```
-
-3. **Access the application**:
-   - **Frontend**: [http://localhost:3000](http://localhost:3000)
-   - **Backend**: [http://localhost:4000](http://localhost:4000)
-   - **Database**: Connect to PostgreSQL at `localhost:5432` with:
-      - Username: `user`
-      - Password: `password`
-      - Database: `employee_db`
-
-### Debugging
-- Use `docker-compose logs` to check the logs for each service if something isn’t working.
-- To stop the containers, press `Ctrl+C` or run:
-   ```bash
-   docker-compose down
-   ```
-
----
-
-Let me know if you need any help or encounter any issues! 🚀
+Let me know if you encounter any issues or need further assistance! 🚀

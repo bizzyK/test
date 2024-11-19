@@ -1,27 +1,31 @@
 version: '3.8'
-services:
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - "4000:4000"
-    depends_on:
-      - postgres
 
-  frontend:
+services:
+  app:
     build:
-      context: ./frontend
+      context: .
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PG_USER=user
+      - PG_PASSWORD=password
+      - PG_HOST=db
+      - PG_DATABASE=employee_db
+      - PG_PORT=5432
     depends_on:
-      - backend
+      - db
 
-  postgres:
-    build:
-      context: ./postgres
+  db:
+    image: postgres:14
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: employee_db
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
