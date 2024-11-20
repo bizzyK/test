@@ -7,14 +7,15 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - PG_USER=user
-      - PG_PASSWORD=password
-      - PG_HOST=db
-      - PG_DATABASE=employee_db
-      - PG_PORT=5432
+      NODE_ENV: production  # Set to production for optimized builds
+      PG_USER: user
+      PG_PASSWORD: password
+      PG_HOST: db
+      PG_DATABASE: employee_db
+      PG_PORT: 5432
     depends_on:
       - db
+    command: yarn start  # Use yarn start to run the built app
 
   db:
     image: postgres:14

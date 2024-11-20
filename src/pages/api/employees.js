@@ -1,13 +1,21 @@
 import { connectToDatabase } from '../../lib/db';
 
 export default async function handler(req, res) {
-    if (req.method === 'GET') {
-        // TODO: Implement logic to fetch employees from the database
-        res.status(501).json({ message: 'GET /api/employees not implemented' });
-    } else if (req.method === 'POST') {
-        // TODO: Implement logic to add a new employee to the database
-        res.status(501).json({ message: 'POST /api/employees not implemented' });
-    } else {
-        res.status(405).json({ message: 'Method Not Allowed' });
+    const { method } = req;
+    const db = await connectToDatabase(); // Use the database connection
+
+    switch (method) {
+        case 'GET':
+            const employees = await db.collection('employees').find().toArray();
+            return res.status(200).json(employees);
+
+        case 'POST':
+            const { name, position } = req.body;
+            await db.collection('employees').insertOne({ name, position });
+            return res.status(201).json({ message: 'Employee added successfully' });
+
+        default:
+            res.setHeader('Allow', ['GET', 'POST']);
+            return res.status(405).end(`Method ${method} Not Allowed`);
     }
 }

@@ -1,14 +1,14 @@
-# Use the official Node.js 18 image as the base
+# Use the official Node.js 20 image as the base
 FROM node:20
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy package.json and yarn.lock
+COPY package.json yarn.lock ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies using Yarn
+RUN yarn install
 
 # Copy the rest of the application code
 COPY . .
@@ -17,7 +17,7 @@ COPY . .
 EXPOSE 3000
 
 # Build the Next.js application
-RUN npm run build
+RUN yarn build
 
-# Start the application
-CMD ["npm", "run", "start"]
+# Start the application using Yarn
+CMD ["yarn", "start"]
